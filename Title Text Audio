@@ -1,0 +1,34 @@
+float theta = 0;
+import processing.sound.*;
+Amplitude amp;
+AudioIn in;
+float ampt;
+
+void setup(){
+  size(600, 480);
+  frameRate(30);
+    amp = new Amplitude(this);
+  in = new AudioIn(this, 0);
+  in.start();
+  amp.input(in);
+}
+
+void draw(){
+  translate(width/2, height/2);
+  background(0);
+  ampt = amp.analyze();
+  println(ampt);
+  for(int i = 0; i < 100; i = i + 1){
+    textSize(100-ampt*300*sin(i/10.0+4*theta));
+    textAlign(CENTER);
+    rotate(0.01*sin(i/10.0+theta));
+    
+    if(i%2==0){
+      fill(0);
+    }else{
+      fill(2.55*i);
+    }
+    text("TERRA INCOGNITA", (250-5*1)*sin(theta), 200+(250-5*i)*cos(theta));
+  }
+  theta = theta - TWO_PI/300;
+}
