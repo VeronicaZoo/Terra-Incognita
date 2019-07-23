@@ -1,0 +1,55 @@
+import processing.sound.*;
+Amplitude amp;
+AudioIn in;
+float ampt;
+float t1 = 0.0;
+float t2 = 0.2;
+float t3 = 0.4;
+float tX = 0.0;
+float tY = 0.3;
+float incrementX = 0.01;
+float increment = 0.1;
+
+void setup() {
+  size(500,500);
+  frameRate(30);
+  smooth(); 
+  background(50, 39, 255);
+  amp = new Amplitude(this);
+  in = new AudioIn(this, 0);
+  in.start();
+  amp.input(in);
+}
+
+void draw() {
+   ampt = amp.analyze();
+  println(ampt);
+  noStroke();
+  
+  //thi rectangle "fades" the drawing slowly
+  fill(210, 185, 90, 1);
+  rect(0, 0, width, height);
+  
+   // Get a noise value at "time" and scale it for each dot.
+  float n = noise(t1)*ampt*400;
+  float m = noise(t2)*ampt*800;
+  float o = noise(t3)*ampt*200;
+  
+  //get a noise value at time and scale it for movement
+  float x = noise(tX)*width;
+  float y = noise(tY)*height;
+  
+  // With each cycle, increment the " time "
+  t1 += increment;
+  t2 += increment;
+  t3 += increment;
+  tX += incrementX;
+  tY += incrementX;
+  
+  // Draw the ellipse with size determined by Perlin noise
+  stroke(255);
+  fill(n, 50, 80);
+  ellipse(x-m, y-m, m, m);
+  ellipse(x+o, y+o, o, o);
+  ellipse(x-n, y+n, n, n);
+}
