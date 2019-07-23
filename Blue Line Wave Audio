@@ -1,0 +1,35 @@
+import processing.sound.*;
+Amplitude amp;
+AudioIn in;
+float ampt;
+float theta = 0;
+int frames = 180;
+float amplitude = 4;
+
+void setup(){
+  size(400, 400);
+  frameRate(30);
+    amp = new Amplitude(this);
+  in = new AudioIn(this, 0);
+  in.start();
+  amp.input(in);
+}
+
+void draw(){
+  translate(width/2, height/2);
+  background(0);
+    ampt = amp.analyze();
+  println(ampt);
+  
+  for(int i = 0; i < width/2; i = i +1){
+    strokeWeight(ampt*pow(1.06, i)+1);
+    fill(40, 200, 255, 210);
+    beginShape();
+    vertex(-30*i, -amplitude*i*sin(3*theta+i/4.0)+pow(1.06, i)-200);
+    vertex(30*i, amplitude*i*sin(3*theta+i/4.0)+pow(1.06, i)-200);
+    vertex(30*(i+1), amplitude*(i+1)*sin(3*theta+(i+1)/4.0)+pow(1.06, (i+1))-200);
+    vertex(-30*(i+1), -amplitude*(i+1)*sin(3*theta+(i+1)/4.0)+pow(1.06, (i+1))-200);
+    endShape(CLOSE);
+  }
+  theta = theta + TWO_PI/frames;
+}
